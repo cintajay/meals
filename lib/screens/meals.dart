@@ -1,12 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:meals/models/meal.dart';
 
 class MealsScreen extends StatelessWidget {
-  const MealsScreen({super.key});
+  const MealsScreen({super.key, required this.meals, required this.title});
+
+  final List<Meal> meals;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
+    Widget body = Placeholder();
+
+    if (meals.isEmpty) {
+      body = Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Uh oh ... nothing here!',
+              style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                color: Theme.of(context).colorScheme.onBackground,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Try selecting a different category!',
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                color: Theme.of(context).colorScheme.onBackground,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(title),
+      ),
+      body: body
     );
   }
 }
