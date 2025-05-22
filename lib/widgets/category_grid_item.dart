@@ -11,6 +11,7 @@ class CategoryGridItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      borderRadius: BorderRadius.circular(16),
       onTap: onSelectCategory,
       child: Container(
         padding: const EdgeInsets.all(16),
