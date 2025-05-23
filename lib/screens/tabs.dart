@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meals/screens/categories.dart';
+import 'package:meals/screens/filters.dart';
 import 'package:meals/screens/meals.dart';
 import 'package:meals/widgets/drawer.dart';
 
@@ -28,13 +29,22 @@ class _TabsScreenState extends State<TabsScreen> {
     });
   }
 
+  void _setScreen(String screen) {
+    Navigator.pop(context);
+    if (screen == 'filters') {
+      Navigator.push(context, MaterialPageRoute(
+        builder: (ctx) => FiltersScreen()
+        ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(_currentTitle),
       ),
-      drawer: MainDrawer(),
+      drawer: MainDrawer(onDrawerItemClick: _setScreen),
       body: _content,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
