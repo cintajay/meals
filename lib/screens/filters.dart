@@ -33,7 +33,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
           Navigator.of(context).pop({
             Filters.glutenFree: _glutenFreeChecked,
             Filters.lactoseFree: _lactoseFreeChecked,
-            Filters.vegetarian: _veganChecked,
+            Filters.vegetarian: _vegetarianChecked,
             Filters.vegan: _veganChecked,
           });
         },
