@@ -1,22 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:meals/providers/filters_provider.dart';
 
-enum Filters {
-  glutenFree,
-  lactoseFree,
-  vegetarian,
-  vegan
-}
-
-class FiltersScreen extends StatefulWidget {
-  const FiltersScreen({super.key, required this.currentFilters});
-
-  final Map<Filters, bool> currentFilters;
+class FiltersScreen extends ConsumerStatefulWidget {
+  const FiltersScreen({super.key});
 
   @override
-  State<FiltersScreen> createState() => _FiltersScreenState();
+  ConsumerState<FiltersScreen> createState() => _FiltersScreenState();
 }
 
-class _FiltersScreenState extends State<FiltersScreen> {
+class _FiltersScreenState extends ConsumerState<FiltersScreen> {
   var _glutenFreeChecked = false;
   var _lactoseFreeChecked = false;
   var _vegetarianChecked = false;
@@ -25,10 +18,12 @@ class _FiltersScreenState extends State<FiltersScreen> {
   @override
   void initState() {
     super.initState();
-    _glutenFreeChecked = widget.currentFilters[Filters.glutenFree]!;
-    _lactoseFreeChecked = widget.currentFilters[Filters.lactoseFree]!;
-    _vegetarianChecked = widget.currentFilters[Filters.vegetarian]!;
-    _veganChecked = widget.currentFilters[Filters.vegan]!;
+    final activeFilters = ref.read(filtersProvider); //read instead of watch because init state only executes once anyways
+
+    _glutenFreeChecked = activeFilters[Filters.glutenFree]!;
+    _lactoseFreeChecked = activeFilters[Filters.lactoseFree]!;
+    _vegetarianChecked = activeFilters[Filters.vegetarian]!;
+    _veganChecked = activeFilters[Filters.vegan]!;
   }
 
   @override
@@ -36,12 +31,12 @@ class _FiltersScreenState extends State<FiltersScreen> {
     return Scaffold(
       appBar: AppBar(title: Text("Your Filters")),
       body: PopScope(
-        canPop: false,
-        onPopInvokedWithResult: (didPop, result) { //manual implementation of pop after setting canPop false
+        canPop: true,
+        onPopInvokedWithResult: (didPop, result) { //manual implementation of pop after setting canPop false, after adding provider canPop set to true
           if (didPop) {
             return;
           }
-          Navigator.of(context).pop({
+          ref.read(filtersProvider.notifier).setFilters({
             Filters.glutenFree: _glutenFreeChecked,
             Filters.lactoseFree: _lactoseFreeChecked,
             Filters.vegetarian: _vegetarianChecked,
