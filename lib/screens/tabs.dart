@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meals/data/dummy_data.dart';
 import 'package:meals/models/meal.dart';
+import 'package:meals/providers/favorites_provider.dart';
 import 'package:meals/providers/meals_provider.dart';
 import 'package:meals/screens/categories.dart';
 import 'package:meals/screens/filters.dart';
@@ -61,7 +62,8 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
     Widget content = CategoriesScreen(availableMeals: availableMeals);
 
     if (_currentIndex == 1) {
-      content = MealsScreen(meals: []);
+      final favoriteMeals = ref.watch(favoriteMealsProvider);
+      content = MealsScreen(meals: favoriteMeals);
       currentTitle = "Your Favourites";
     }
 
