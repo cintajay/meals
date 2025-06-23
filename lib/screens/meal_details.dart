@@ -29,7 +29,20 @@ class MealDetailsScreen extends ConsumerWidget {
                       wasAdded ? 'Meal added as a favorite.' : 'Meal removed.'),
                 ),
               );
-            }, icon: Icon(isFavorite ? Icons.star: Icons.star_border)
+            },
+            icon: AnimatedSwitcher(
+              duration: Duration(milliseconds: 300),
+              transitionBuilder: (child, animation) {
+                return RotationTransition( //RotationTransition is an inbuild animation
+                  turns: animation, 
+                  child: child
+                );
+              },
+              child: Icon(
+                isFavorite ? Icons.star: Icons.star_border, 
+                key: ValueKey(isFavorite), //key is used to differentiate the Icon child passed to transitionBuilder
+              ),
+            )
           )
         ],
       ),
