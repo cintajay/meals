@@ -52,11 +52,35 @@ class _CategoriesScreenState extends State<CategoriesScreen> with SingleTickerPr
     return Scaffold(
       body: AnimatedBuilder(
         animation: _animationController,
-        builder: (context, child) => SlideTransition(
-          position: Tween(
+        builder: (context, child) => SlideTransition( // SlideTransition func executes 60 times per second to show animation
+        //can add a custom animation instead of SlideTransition by using _animationController.value(its value changes btw the bounds) to change say the padding value
+        //Eg: EdgeInsets.only(top: 100 - _animationController.value*100)
+          position: Tween( //or _animationController.drive(), Tween is a predefined animatable child
             begin: Offset(0, 0.3),
             end: Offset(0, 0),
-          ).animate(parent),
+          ).animate(CurvedAnimation(
+            parent: _animationController,
+            curve: Curves.easeInOut,
+          )),
+          child: child,
+        ),
+        child: GridView( //this child is passed to the builder to improve performance so that not all parts of this widget is rebuild
+        padding: EdgeInsets.all(24),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 1.5,
+          crossAxisSpacing: 20,
+          mainAxisSpacing: 20
+        ),
+          children: [
+            for (final item in availableCategories)
+              CategoryGridItem(
+                category: item,
+                onSelectCategory: () {
+                  _categorySelected(context, item);
+                },
+              ),
+          ],
         ),
       )
     );
